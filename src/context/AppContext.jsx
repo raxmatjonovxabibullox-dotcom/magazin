@@ -251,64 +251,87 @@ export const AppProvider = ({ children }) => {
       return { success: false, error: "Bot token yoki Chat ID belgilanmagan" };
     }
 
+    // Filter inline keyboard buttons: Telegram Bot API ONLY accepts valid public http/https/tg URLs.
+    // It rejects 'tel:', 'http://localhost', etc.
+    const cleanKeyboard = inlineKeyboard ? inlineKeyboard.map(row => 
+      row.filter(btn => btn?.url && (btn.url.startsWith('https://') || (btn.url.startsWith('http://') && !btn.url.includes('localhost') && !btn.url.includes('127.0.0.1'))))
+    ).filter(row => row.length > 0) : null;
+
+    const payloadKeyboard = cleanKeyboard && cleanKeyboard.length > 0 ? { inline_keyboard: cleanKeyboard } : null;
+
+    const executeApi = async (method, body) => {
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/${method}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        return await res.json();
+      } catch (e) {
+        return { ok: false, description: e.message };
+      }
+    };
+
     try {
-      let endpoint = `https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`;
-      let payload = {
-        chat_id: telegramConfig.chatId,
-        parse_mode: 'HTML'
-      };
+      let result = null;
 
-      // If photoUrl is provided, attempt sendPhoto endpoint first
+      // Stage 1: Try sendPhoto with formatted caption and buttons if photoUrl is valid
       if (photoUrl && typeof photoUrl === 'string' && photoUrl.startsWith('http')) {
-        endpoint = `https://api.telegram.org/bot${telegramConfig.botToken}/sendPhoto`;
-        payload.photo = photoUrl;
-        payload.caption = text.length > 1024 ? text.substring(0, 1020) + '...' : text;
-      } else {
-        payload.text = text;
-        payload.disable_web_page_preview = false;
-      }
-
-      if (inlineKeyboard) {
-        payload.reply_markup = {
-          inline_keyboard: inlineKeyboard
+        const photoPayload = {
+          chat_id: telegramConfig.chatId,
+          photo: photoUrl,
+          caption: text.length > 1024 ? text.substring(0, 1020) + '...' : text,
+          parse_mode: 'HTML'
         };
+        if (payloadKeyboard) photoPayload.reply_markup = payloadKeyboard;
+
+        result = await executeApi('sendPhoto', photoPayload);
+        if (!result.ok) {
+          console.warn("Telegram sendPhoto with buttons failed, retrying without buttons:", result.description);
+          // Retry sendPhoto without buttons in case buttons caused issue
+          result = await executeApi('sendPhoto', {
+            chat_id: telegramConfig.chatId,
+            photo: photoUrl,
+            caption: text.length > 1024 ? text.substring(0, 1020) + '...' : text,
+            parse_mode: 'HTML'
+          });
+        }
       }
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      // Stage 2: If photo was not provided or failed, send via sendMessage
+      if (!result || !result.ok) {
+        const msgPayload = {
+          chat_id: telegramConfig.chatId,
+          text: text,
+          parse_mode: 'HTML'
+        };
+        if (payloadKeyboard) msgPayload.reply_markup = payloadKeyboard;
 
-      const data = await res.json();
+        result = await executeApi('sendMessage', msgPayload);
+      }
 
-      // Fallback to text message if photo URL failed
-      if (!data.ok && photoUrl) {
-        return sendTelegramMessage(text, inlineKeyboard, null);
+      // Stage 3: If still failed (e.g. malformed HTML or rejected button), fallback to simple plain text
+      if (!result.ok) {
+        const plainText = text.replace(/<[^>]+>/g, '');
+        result = await executeApi('sendMessage', {
+          chat_id: telegramConfig.chatId,
+          text: plainText
+        });
       }
 
       const logEntry = {
         id: 'log_' + Date.now(),
         timestamp: new Date().toLocaleString('uz-UZ'),
-        status: data.ok ? 'success' : 'error',
-        details: data.ok ? (photoUrl ? 'Rasm va xabar muvaffaqiyatli yuborildi' : 'Muvaffaqiyatli yuborildi') : (data.description || 'Nomaʼlum xatolik')
+        status: result.ok ? 'success' : 'error',
+        details: result.ok ? 'Muvaffaqiyatli yuborildi' : (result.description || 'Xatolik')
       };
 
       setTelegramLogs(prev => [logEntry, ...prev.slice(0, 49)]);
       localStorage.setItem('app_telegram_logs', JSON.stringify([logEntry, ...telegramLogs.slice(0, 49)]));
 
-      return { success: data.ok, data, error: data.description };
+      return { success: result.ok, data: result, error: result.description };
     } catch (err) {
-      if (photoUrl) {
-        return sendTelegramMessage(text, inlineKeyboard, null);
-      }
-      const logEntry = {
-        id: 'log_' + Date.now(),
-        timestamp: new Date().toLocaleString('uz-UZ'),
-        status: 'error',
-        details: 'Tarmoq xatosi: ' + err.message
-      };
-      setTelegramLogs(prev => [logEntry, ...prev.slice(0, 49)]);
+      console.error("Telegram unexpected error:", err);
       return { success: false, error: err.message };
     }
   };
@@ -337,7 +360,7 @@ export const AppProvider = ({ children }) => {
     let orderText = `🛒 <b>YANGI BUYURTMA #${orderId}</b>\n`;
     orderText += `📅 <i>Sana: ${orderDate}</i>\n\n`;
     orderText += `👤 <b>Mijoz:</b> ${customerDetails.fullName}\n`;
-    orderText += `📞 <b>Tel:</b> <code>${customerDetails.phone}</code>\n`;
+    orderText += `📞 <b>Telefon:</b> <code>${customerDetails.phone}</code>\n`;
     orderText += `📍 <b>Manzil:</b> ${customerDetails.address}\n`;
     orderText += `💳 <b>To'lov turi:</b> <code>${customerDetails.paymentMethod.toUpperCase()}</code>\n\n`;
     orderText += `📦 <b>Mahsulotlar ro'yxati:</b>\n`;
@@ -353,16 +376,15 @@ export const AppProvider = ({ children }) => {
     orderText += `🚚 <b>Yetkazish:</b> ${deliveryFee === 0 ? 'BEPUL' : '$' + deliveryFee}\n`;
     orderText += `💰 <b>JAMI TO'LOV:</b> <code>$${totalAmount.toFixed(2)}</code>`;
 
-    // Clean phone number for tel: link
-    const cleanPhone = customerDetails.phone.replace(/[^0-9+]/g, '');
-
+    // Safe valid HTTPS inline buttons
+    const addressQuery = encodeURIComponent(customerDetails.address || 'Toshkent');
     const inlineButtons = [
       [
-        { text: "📞 Mijozga qo'ng'iroq", url: `tel:${cleanPhone}` },
-        { text: "📍 Xaritada izlash", url: `https://maps.google.com/?q=${encodeURIComponent(customerDetails.address)}` }
+        { text: "📍 Google Xarita", url: `https://maps.google.com/?q=${addressQuery}` },
+        { text: "🗺 Yandex Xarita", url: `https://yandex.uz/maps/?text=${addressQuery}` }
       ],
       [
-        { text: "🛍️ Saytga o'tish", url: window.location.origin }
+        { text: "🛍️ VOV Shop Do'koni", url: "https://github.com/raxmatjonovxabibullox-dotcom/magazin" }
       ]
     ];
 
