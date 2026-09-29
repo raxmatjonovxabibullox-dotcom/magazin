@@ -332,13 +332,17 @@ export const AppProvider = ({ children }) => {
   const [telegramConfig, setTelegramConfig] = useState(() => {
     const saved = localStorage.getItem('app_telegram_config');
     if (saved) {
-      const parsed = JSON.parse(saved);
-      return {
-        botToken: '8823235791:AAEOLjLhNRfFw9xp7quwlfucSXEpL8fCtc8',
-        chatId: parsed.chatId && parsed.chatId !== '123456789' && parsed.chatId !== '@Kitobchalar_bot' ? parsed.chatId : '8170197389'
-      };
+      try {
+        const parsed = JSON.parse(saved);
+        return {
+          botToken: parsed.botToken || '',
+          chatId: parsed.chatId && parsed.chatId !== '123456789' && parsed.chatId !== '@Kitobchalar_bot' ? parsed.chatId : '8170197389'
+        };
+      } catch (e) {
+        // fallback below
+      }
     }
-    return { botToken: '8823235791:AAEOLjLhNRfFw9xp7quwlfucSXEpL8fCtc8', chatId: '8170197389' };
+    return { botToken: '', chatId: '8170197389' };
   });
 
 
@@ -355,8 +359,8 @@ export const AppProvider = ({ children }) => {
   };
 
   const sendTelegramMessage = async (text, inlineKeyboard = null, photoUrl = null) => {
-    if (!telegramConfig.botToken || !telegramConfig.chatId) {
-      return { success: false, error: "Bot token yoki Chat ID belgilanmagan" };
+    if (!telegramConfig.chatId) {
+      return { success: false, error: "Chat ID belgilanmagan" };
     }
 
     // Filter inline keyboard buttons: Telegram Bot API ONLY accepts valid public http/https/tg URLs.
@@ -367,17 +371,46 @@ export const AppProvider = ({ children }) => {
 
     const payloadKeyboard = cleanKeyboard && cleanKeyboard.length > 0 ? { inline_keyboard: cleanKeyboard } : null;
 
+    // Secure proxy execution: Hides Bot Token from DevTools Network & Sources!
     const executeApi = async (method, body) => {
+      // 1. First priority: Server-side proxy (/api/telegram)
+      // DevTools will only see /api/telegram without any Bot Token in URL or headers
       try {
-        const res = await fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/${method}`, {
+        const proxyRes = await fetch('/api/telegram', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
+          body: JSON.stringify({
+            method,
+            body,
+            ...(telegramConfig.botToken ? { botToken: telegramConfig.botToken } : {})
+          })
         });
-        return await res.json();
-      } catch (e) {
-        return { ok: false, description: e.message };
+
+        if (proxyRes.ok) {
+          const resData = await proxyRes.json();
+          if (resData && typeof resData.ok === 'boolean') {
+            return resData;
+          }
+        }
+      } catch (proxyErr) {
+        console.warn('Backend proxy /api/telegram request error:', proxyErr);
       }
+
+      // 2. Direct fallback (only if admin manually specified a custom botToken in dashboard)
+      if (telegramConfig.botToken) {
+        try {
+          const res = await fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/${method}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          return await res.json();
+        } catch (e) {
+          return { ok: false, description: e.message };
+        }
+      }
+
+      return { ok: false, description: "Telegram xizmatiga ulanib bo'lmadi (.env yoki botToken tekshiring)" };
     };
 
     try {

@@ -921,16 +921,24 @@ export default function OwnerDashboard() {
 
               <form onSubmit={handleSaveTelegram} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
-                    Telegram Bot Token
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-slate-300">
+                      Telegram Bot Token
+                    </label>
+                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                      🔒 DevTools dan yashirilgan (.env)
+                    </span>
+                  </div>
                   <input
-                    type="text"
+                    type="password"
                     value={botToken}
                     onChange={(e) => setBotToken(e.target.value)}
-                    placeholder="8823235791:AAEOLjLhNRfFw9xp7quwlfucSXEpL8fCtc8"
+                    placeholder="Server orqali himoyalangan (.env orqali ishlaydi)"
                     className="w-full p-3 rounded-xl text-xs bg-slate-900 border border-slate-700 text-white outline-none font-mono"
                   />
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Token .env faylida saqlanadi. DevTools tarmoq so'rovlarida mutlaqo ko'rinmaydi.
+                  </p>
                 </div>
 
                 <div>
