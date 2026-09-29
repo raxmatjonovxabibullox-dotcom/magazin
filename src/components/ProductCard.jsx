@@ -35,7 +35,7 @@ export default function ProductCard({ product, onQuickView }) {
           alt={product.title}
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop";
+            e.target.src = "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop";
           }}
           className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 ease-out"
           loading="lazy"

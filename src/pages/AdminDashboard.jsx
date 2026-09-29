@@ -515,6 +515,10 @@ export default function AdminDashboard() {
                         <img
                           src={p.image}
                           alt={p.title}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop";
+                          }}
                           className="w-12 h-12 object-cover rounded-xl bg-slate-100 dark:bg-slate-800"
                         />
                       </td>

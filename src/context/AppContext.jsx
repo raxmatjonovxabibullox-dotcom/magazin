@@ -61,12 +61,14 @@ export const AppProvider = ({ children }) => {
   };
 
   // 4. Products CRUD state
+  const FALLBACK_PRODUCT_IMAGE = "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop";
+
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem('app_products');
     const loaded = saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
     return loaded.map(p => {
-      if (p.image?.includes('1609592424074')) {
-        return { ...p, image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop" };
+      if (!p.image || p.image.includes('1583863788434') || p.image.includes('1609592424074')) {
+        return { ...p, image: FALLBACK_PRODUCT_IMAGE };
       }
       return p;
     });
@@ -123,7 +125,19 @@ export const AppProvider = ({ children }) => {
   // 6. Cart state & Promo Code
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem('app_cart');
-    return saved ? JSON.parse(saved) : [];
+    const loadedCart = saved ? JSON.parse(saved) : [];
+    return loadedCart.map(item => {
+      if (!item.product?.image || item.product.image.includes('1583863788434') || item.product.image.includes('1609592424074')) {
+        return {
+          ...item,
+          product: {
+            ...item.product,
+            image: FALLBACK_PRODUCT_IMAGE
+          }
+        };
+      }
+      return item;
+    });
   });
 
   useEffect(() => {
