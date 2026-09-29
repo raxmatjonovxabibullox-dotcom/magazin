@@ -159,6 +159,330 @@ export const INITIAL_PRODUCTS = [
       Output: "Max 200W Combined",
       Ports: "2x USB-C, 1x USB-A"
     }
+  },
+  {
+    id: "p9",
+    title: "Google Pixel 9 Pro XL 256GB Obsidian",
+    category: "cat_smartphones",
+    price: 1099,
+    oldPrice: 1199,
+    stock: 15,
+    rating: 4.8,
+    reviewsCount: 32,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=800&auto=format&fit=crop",
+    description: "Gemini AI integratsiyasi, Google Tensor G4 protsessori va ilg'or 50MP pro kamera tizimi.",
+    specs: {
+      Screen: "6.8-inch Super Actua LTPO OLED 120Hz",
+      Chip: "Google Tensor G4 (4nm)",
+      Camera: "50MP Main + 48MP Ultra Wide + 48MP Telephoto",
+      Battery: "5060 mAh 37W Fast Charging",
+      OS: "Android 15"
+    }
+  },
+  {
+    id: "p10",
+    title: "Xiaomi 15 Ultra Leica Optics 512GB",
+    category: "cat_smartphones",
+    price: 1049,
+    oldPrice: 1199,
+    stock: 10,
+    rating: 4.8,
+    reviewsCount: 28,
+    isFlashSale: true,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1567581935884-3349723552ca?q=80&w=800&auto=format&fit=crop",
+    description: "Leica professional optikasi, Snapdragon 8 Elite va 90W giper tezkor quvvatlash.",
+    specs: {
+      Screen: "6.73-inch AMOLED 2K 120Hz Dolby Vision",
+      Chip: "Qualcomm Snapdragon 8 Elite",
+      Camera: "50MP 1-inch sensor Leica Quad Camera",
+      Battery: "6000 mAh 90W Wired + 80W Wireless",
+      OS: "HyperOS 2.0"
+    }
+  },
+  {
+    id: "p11",
+    title: "MacBook Air 15 M3 16GB / 512GB Midnight",
+    category: "cat_laptops",
+    price: 1499,
+    oldPrice: 1699,
+    stock: 14,
+    rating: 4.9,
+    reviewsCount: 54,
+    isFlashSale: true,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=800&auto=format&fit=crop",
+    description: "Yupqa va yengil alyuminiy korpus, M3 chipining mislsiz unumdorligi va 18 soatgacha batareya.",
+    specs: {
+      CPU: "Apple M3 8-core CPU / 10-core GPU",
+      RAM: "16GB Unified Memory",
+      Storage: "512GB SSD",
+      Display: "15.3-inch Liquid Retina Display",
+      Weight: "1.51 kg"
+    }
+  },
+  {
+    id: "p12",
+    title: "Dell XPS 16 OLED Core Ultra 9 32GB RTX 4070",
+    category: "cat_laptops",
+    price: 2899,
+    oldPrice: 3199,
+    stock: 6,
+    rating: 4.8,
+    reviewsCount: 22,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=800&auto=format&fit=crop",
+    description: "Mukammal 4K OLED sensorli ekran, Intel Core Ultra 9 va kuchli NVIDIA RTX 4070 grafikasi.",
+    specs: {
+      CPU: "Intel Core Ultra 9 185H",
+      GPU: "NVIDIA GeForce RTX 4070 8GB GDDR6",
+      RAM: "32GB LPDDR5X",
+      Storage: "1TB PCIe Gen4 SSD",
+      Display: "16.3-inch 4K+ OLED Touchscreen"
+    }
+  },
+  {
+    id: "p13",
+    title: "Lenovo ThinkPad X1 Carbon Gen 12 Ultralight",
+    category: "cat_laptops",
+    price: 1899,
+    oldPrice: 2099,
+    stock: 8,
+    rating: 4.9,
+    reviewsCount: 38,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop",
+    description: "Biznes uchun afsonaviy mustahkam uglerod tolali korpus va qulay ergonomik klaviatura.",
+    specs: {
+      CPU: "Intel Core Ultra 7 155H",
+      RAM: "32GB LPDDR5X",
+      Storage: "1TB NVMe SSD",
+      Display: "14-inch 2.8K OLED 120Hz",
+      Weight: "1.09 kg"
+    }
+  },
+  {
+    id: "p14",
+    title: "Marshall Major IV Wireless Bluetooth Headphones",
+    category: "cat_audio",
+    price: 149,
+    oldPrice: 179,
+    stock: 24,
+    rating: 4.8,
+    reviewsCount: 86,
+    isFlashSale: true,
+    isNew: false,
+    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=800&auto=format&fit=crop",
+    description: "Afsonaviy Marshall ovoz sifati, 80+ soat simsiz tinglash va qulay buklanuvchi dizayn.",
+    specs: {
+      Battery: "80+ Hours Wireless Playtime",
+      Charging: "Wireless Charging + Quick Charge (15min = 15hrs)",
+      Drivers: "40mm Dynamic",
+      Connectivity: "Bluetooth 5.0 / 3.5mm Jack"
+    }
+  },
+  {
+    id: "p15",
+    title: "JBL Boombox 3 Wi-Fi & Bluetooth Massive Bass",
+    category: "cat_audio",
+    price: 499,
+    oldPrice: 599,
+    stock: 11,
+    rating: 4.9,
+    reviewsCount: 41,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=800&auto=format&fit=crop",
+    description: "Katta quvvatli bass va Dolby Atmos qo'llab-quvvatlovi bilan kuchli portativ karnay.",
+    specs: {
+      Power: "180W RMS (AC mode) / 136W (Battery)",
+      Battery: "Up to 24 Hours",
+      Protection: "IP67 Suv va changdan himoya",
+      Features: "Wi-Fi, Bluetooth 5.3, Built-in Powerbank"
+    }
+  },
+  {
+    id: "p16",
+    title: "Samsung Galaxy Watch Ultra 47mm LTE Titanium",
+    category: "cat_watches",
+    price: 649,
+    oldPrice: 729,
+    stock: 9,
+    rating: 4.8,
+    reviewsCount: 35,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?q=80&w=800&auto=format&fit=crop",
+    description: "Ekstremal sport va faol hayot tarzi uchun titan korpus va ikki chastotali GPS.",
+    specs: {
+      Case: "47mm Grade 4 Titanium",
+      Display: "1.5-inch Super AMOLED 3000 nits",
+      Battery: "590 mAh (100 soatgacha energiya tejash rejimida)",
+      Durability: "10 ATM + IP68 + MIL-STD-810H"
+    }
+  },
+  {
+    id: "p17",
+    title: "Garmin Fenix 7X Pro Solar Sapphire Multisport",
+    category: "cat_watches",
+    price: 899,
+    oldPrice: 999,
+    stock: 5,
+    rating: 5.0,
+    reviewsCount: 48,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop",
+    description: "Quyosh batareyasi orqali zaryadlanuvchi safir oynali professional sport soati.",
+    specs: {
+      Lens: "Power Sapphire Solar Charging",
+      Battery: "37 kungacha (quyosh quvvati bilan)",
+      Flashlight: "O'rnatilgan ko'p rejimli LED chiroq",
+      Navigation: "TopoActive xaritalar va ko'p polosali GNSS"
+    }
+  },
+  {
+    id: "p18",
+    title: "Apple Watch Series 10 Jet Black 46mm GPS",
+    category: "cat_watches",
+    price: 429,
+    oldPrice: 479,
+    stock: 16,
+    rating: 4.9,
+    reviewsCount: 63,
+    isFlashSale: true,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1509741102003-ca64bfe5f069?q=80&w=800&auto=format&fit=crop",
+    description: "Tarixdagi eng yupqa Apple Watch, yanada keng ko'rish burchagiga ega OLED displey.",
+    specs: {
+      Chip: "Apple S10 SiP 64-bit dual-core",
+      Display: "Wide-angle OLED Always-On Retina",
+      Sensors: "EKG, Qon kislorodi, Uyqu apnesi tahlili",
+      Charging: "Tezkor zaryadlash (30 daqiqada 80%)"
+    }
+  },
+  {
+    id: "p19",
+    title: "Logitech MX Master 3S Wireless Performance Mouse",
+    category: "cat_accessories",
+    price: 99,
+    oldPrice: 119,
+    stock: 35,
+    rating: 4.9,
+    reviewsCount: 140,
+    isFlashSale: true,
+    isNew: false,
+    image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=800&auto=format&fit=crop",
+    description: "Dasturchilar va dizaynerlar uchun eng mashhur ergonomik sokin bosiluvchi sichqoncha.",
+    specs: {
+      Sensor: "8000 DPI Darkfield (shisha ustida ham ishlaydi)",
+      Scroll: "MagSpeed elektromagnit aylantirish (sekundiga 1000 qator)",
+      Battery: "70 kungacha (1 daqiqa zaryad = 3 soat ish)",
+      Connectivity: "Bluetooth Low Energy + Logi Bolt USB"
+    }
+  },
+  {
+    id: "p20",
+    title: "Apple MagSafe Duo Wireless Fast Charger",
+    category: "cat_accessories",
+    price: 129,
+    oldPrice: 149,
+    stock: 20,
+    rating: 4.7,
+    reviewsCount: 45,
+    isFlashSale: false,
+    isNew: false,
+    image: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=800&auto=format&fit=crop",
+    description: "iPhone va Apple Watch qurilmalarini bir vaqtning o'zida quvvatlovchi buklanuvchi stansiya.",
+    specs: {
+      Compatibility: "iPhone 12/13/14/15/16, Apple Watch, AirPods",
+      Port: "Lightning / USB-C to Lightning Cable",
+      Design: "Ixcham sayohat uchun buklanadigan premium mato"
+    }
+  },
+  {
+    id: "p21",
+    title: "Baseus GaN5 Pro 140W Desktop Fast Charger Hub",
+    category: "cat_accessories",
+    price: 79,
+    oldPrice: 99,
+    stock: 40,
+    rating: 4.8,
+    reviewsCount: 72,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+    description: "Noutbuk, planshet va telefonlarni bir vaqtda to'liq quvvatlovchi zamonaviy GaN texnologiyasi.",
+    specs: {
+      Output: "Max 140W PD 3.1 Fast Charge",
+      Ports: "2x USB-C + 1x USB-A",
+      Technology: "GaN5 Pro & BPS II aqlli taqsimlash",
+      Weight: "304g"
+    }
+  },
+  {
+    id: "p22",
+    title: "Sony PlayStation 5 Pro 2TB 4K 120fps Console",
+    category: "cat_gaming",
+    price: 699,
+    oldPrice: 749,
+    stock: 7,
+    rating: 4.9,
+    reviewsCount: 58,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800&auto=format&fit=crop",
+    description: "PSSR sun'iy intellektli masshtablash, 2TB xotira va 120 kadr/soniyada 4K o'yin grafikasiga ega yangi PS5 Pro.",
+    specs: {
+      Storage: "2TB Ultra-High Speed Custom SSD",
+      Graphics: "Kengaytirilgan Ray Tracing va AI Upscaling (PSSR)",
+      Performance: "4K 60fps/120fps va 8K qo'llab-quvvatlovi",
+      Controller: "DualSense Wireless Controller Haptic Feedback"
+    }
+  },
+  {
+    id: "p23",
+    title: "Nintendo Switch OLED Model Mario Red Edition",
+    category: "cat_gaming",
+    price: 349,
+    oldPrice: 399,
+    stock: 15,
+    rating: 4.8,
+    reviewsCount: 82,
+    isFlashSale: true,
+    isNew: false,
+    image: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?q=80&w=800&auto=format&fit=crop",
+    description: "7 dyuymli yorqin rang-barang OLED ekran, mustahkam metall tayanch va boy ovozli dinamiklar.",
+    specs: {
+      Screen: "7.0-inch OLED Multi-touch Display",
+      Storage: "64GB Internal (MicroSD kengaytma)",
+      Modes: "TV rejimi, Stol rejimi, Portativ rejim",
+      Battery: "4.5 dan 9 soatgacha o'yin vaqti"
+    }
+  },
+  {
+    id: "p24",
+    title: "Razer DeathAdder V3 Pro Wireless Gaming Mouse",
+    category: "cat_gaming",
+    price: 149,
+    oldPrice: 169,
+    stock: 22,
+    rating: 4.9,
+    reviewsCount: 67,
+    isFlashSale: false,
+    isNew: true,
+    image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?q=80&w=800&auto=format&fit=crop",
+    description: "Professional kibersportchilar tanlovi: 63 gramm yengillik va 30,000 DPI optik sensor.",
+    specs: {
+      Sensor: "Focus Pro 30K Optical Sensor",
+      Weight: "63g Ultra-yengil vazn",
+      Switches: "Optical Mouse Switches Gen-3 (90 mln marta bosish)",
+      Battery: "90 soatgacha uzluksiz o'yin vaqti"
+    }
   }
 ];
 

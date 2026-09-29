@@ -165,7 +165,15 @@ export const AppProvider = ({ children }) => {
 
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem('app_products');
-    const loaded = saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+    let loaded = saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+
+    // Automatically append any new assortment products from INITIAL_PRODUCTS
+    if (loaded && loaded.length < INITIAL_PRODUCTS.length) {
+      const existingIds = new Set(loaded.map(p => p.id));
+      const missing = INITIAL_PRODUCTS.filter(p => !existingIds.has(p.id));
+      loaded = [...loaded, ...missing];
+    }
+
     return loaded.map(p => {
       if (p.id === 'p8' || !p.image || p.image.includes('1544816155-12df9643f363') || p.image.includes('1583863788434') || p.image.includes('1609592424074')) {
         return { ...p, image: REAL_POWERBANK_IMAGE };
