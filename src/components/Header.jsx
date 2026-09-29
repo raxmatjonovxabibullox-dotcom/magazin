@@ -15,7 +15,8 @@ import {
   Sparkles,
   Zap,
   Maximize,
-  Minimize
+  Minimize,
+  ExternalLink
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import AuthModal from './AuthModal';
@@ -142,16 +143,31 @@ export default function Header() {
           {/* Nav Links Desktop */}
           <nav className="hidden lg:flex items-center gap-6 font-medium text-sm">
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`transition-colors duration-200 hover:text-indigo-600 dark:hover:text-indigo-400 ${location.pathname === link.path
-                    ? 'text-indigo-600 dark:text-indigo-400 font-bold border-b-2 border-indigo-600 dark:border-indigo-400 pb-0.5'
-                    : 'text-gray-700 dark:text-gray-300'
-                  }`}
-              >
-                {link.label}
-              </Link>
+              link.path === '/admin' ? (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 font-extrabold hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition shadow-sm"
+                  title="Admin panelni alohida oynada ochish"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                  <span>{link.label}</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                </a>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`transition-colors duration-200 hover:text-indigo-600 dark:hover:text-indigo-400 ${location.pathname === link.path
+                      ? 'text-indigo-600 dark:text-indigo-400 font-bold border-b-2 border-indigo-600 dark:border-indigo-400 pb-0.5'
+                      : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
           </nav>
 
@@ -299,17 +315,34 @@ export default function Header() {
 
             <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`px-3 py-2 rounded-lg text-sm font-semibold transition ${location.pathname === link.path
-                      ? 'bg-indigo-600 text-white'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
-                >
-                  {link.label}
-                </Link>
+                link.path === '/admin' ? (
+                  <a
+                    key={link.path}
+                    href={link.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400"
+                  >
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                      <span>{link.label}</span>
+                    </div>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                ) : (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-3 py-2 rounded-lg text-sm font-semibold transition ${location.pathname === link.path
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
 
               {!user && (
