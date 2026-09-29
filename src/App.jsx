@@ -11,6 +11,7 @@ import WishlistPage from './pages/WishlistPage';
 import CartCheckoutPage from './pages/CartCheckoutPage';
 import AboutMapPage from './pages/AboutMapPage';
 import AdminDashboard from './pages/AdminDashboard';
+import OwnerDashboard from './pages/OwnerDashboard';
 
 function MainShopLayout({ children }) {
   return (
@@ -38,6 +39,9 @@ export default function App() {
           
           {/* Standalone Admin Dashboard (No Store Header or Footer) */}
           <Route path="/admin" element={<AdminDashboard />} />
+
+          {/* Standalone Owner / Superadmin Dashboard */}
+          <Route path="/owner" element={<OwnerDashboard />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -28,6 +28,11 @@ export default function AuthModal({ onClose }) {
     setPassword('admin123');
   };
 
+  const handleFillOwner = () => {
+    setUsernameOrPhone('owner');
+    setPassword('owner123');
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
       <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
@@ -122,18 +127,30 @@ export default function AuthModal({ onClose }) {
             </div>
           </div>
 
-          {/* Quick Demo Admin Button */}
-          <div className="pt-2">
+          {/* Quick Demo Admin & Owner Buttons */}
+          <div className="pt-2 space-y-2">
+            <button
+              type="button"
+              onClick={handleFillOwner}
+              className="w-full py-2 px-3 rounded-xl bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs font-bold flex items-center justify-between hover:bg-amber-500/20 transition"
+            >
+              <div className="flex items-center gap-1.5">
+                <span>👑</span>
+                <span>Loyiha Egasi (Owner): <b>owner</b> / <b>owner123</b></span>
+              </div>
+              <span className="underline font-bold">Tanlash</span>
+            </button>
+
             <button
               type="button"
               onClick={handleFillAdmin}
-              className="w-full py-2 px-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold flex items-center justify-between hover:bg-amber-100 dark:hover:bg-amber-900/40 transition"
+              className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold flex items-center justify-between hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition"
             >
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-amber-600" />
-                <span>{t.demo_admin_hint}</span>
+                <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                <span>Admin: <b>admin</b> / <b>admin123</b></span>
               </div>
-              <span className="underline font-bold">Avto-to'ldirish</span>
+              <span className="underline font-bold">Tanlash</span>
             </button>
           </div>
 

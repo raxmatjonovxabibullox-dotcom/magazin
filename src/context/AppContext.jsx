@@ -38,21 +38,120 @@ export const AppProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : null;
   });
 
+  // Admins state (managed by Owner)
+  const INITIAL_ADMINS = [
+    {
+      id: 'adm_1',
+      username: 'admin',
+      password: 'admin123',
+      name: 'System Admin',
+      phone: '+998 (90) 123-45-67',
+      role: 'admin',
+      status: 'active',
+      createdAt: '2026-09-01',
+      lastLogin: 'Bugun, 17:30'
+    },
+    {
+      id: 'adm_2',
+      username: 'sardor_admin',
+      password: 'sardor2026',
+      name: 'Sardorbek Rahimov',
+      phone: '+998 (97) 765-43-21',
+      role: 'admin',
+      status: 'active',
+      createdAt: '2026-09-15',
+      lastLogin: 'Bugun, 15:10'
+    },
+    {
+      id: 'adm_3',
+      username: 'dilshod_support',
+      password: 'dilshod123',
+      name: 'Dilshod Aliyev',
+      phone: '+998 (93) 333-22-11',
+      role: 'admin',
+      status: 'active',
+      createdAt: '2026-09-20',
+      lastLogin: 'Kecha, 18:45'
+    }
+  ];
+
+  const [admins, setAdmins] = useState(() => {
+    const saved = localStorage.getItem('app_admins');
+    return saved ? JSON.parse(saved) : INITIAL_ADMINS;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('app_admins', JSON.stringify(admins));
+  }, [admins]);
+
+  const addAdmin = (newAdmin) => {
+    const created = {
+      ...newAdmin,
+      id: 'adm_' + Date.now(),
+      role: 'admin',
+      status: 'active',
+      createdAt: new Date().toLocaleDateString('uz-UZ'),
+      lastLogin: 'Hech qachon'
+    };
+    setAdmins(prev => [created, ...prev]);
+    return created;
+  };
+
+  const updateAdmin = (id, updatedFields) => {
+    setAdmins(prev => prev.map(a => (a.id === id ? { ...a, ...updatedFields } : a)));
+  };
+
+  const deleteAdmin = (id) => {
+    setAdmins(prev => prev.filter(a => a.id !== id));
+  };
+
+  const toggleAdminStatus = (id) => {
+    setAdmins(prev =>
+      prev.map(a =>
+        a.id === id ? { ...a, status: a.status === 'active' ? 'blocked' : 'active' } : a
+      )
+    );
+  };
+
   const login = (usernameOrPhone, password) => {
+    // 1. Owner Login (Superadmin / Loyiha Egasi)
     if (
-      (usernameOrPhone === 'admin' || usernameOrPhone === '+998901234567') &&
-      password === 'admin123'
+      (usernameOrPhone === 'owner' || usernameOrPhone === 'raxmatjonovxabibullox@gmail.com') &&
+      (password === 'owner123' || password === 'owner')
     ) {
-      const adminUser = { username: usernameOrPhone, name: 'System Admin', role: 'admin' };
+      const ownerUser = {
+        username: usernameOrPhone,
+        name: 'Xabibullox (Loyiha Egasi)',
+        role: 'owner',
+        email: 'raxmatjonovxabibullox@gmail.com'
+      };
+      setUser(ownerUser);
+      localStorage.setItem('app_user', JSON.stringify(ownerUser));
+      return { success: true, user: ownerUser };
+    }
+
+    // 2. Dynamic or default Admin login
+    const matchingAdmin = admins.find(a =>
+      (a.username === usernameOrPhone || a.phone === usernameOrPhone) &&
+      (a.password === password)
+    );
+
+    if (matchingAdmin || ((usernameOrPhone === 'admin' || usernameOrPhone === '+998901234567') && password === 'admin123')) {
+      const adminData = matchingAdmin || { username: 'admin', name: 'System Admin', role: 'admin', status: 'active' };
+      if (adminData.status === 'blocked') {
+        return { success: false, error: 'Ushbu admin hisobi Owner tomonidan bloklangan!' };
+      }
+      const adminUser = { ...adminData, role: 'admin' };
       setUser(adminUser);
       localStorage.setItem('app_user', JSON.stringify(adminUser));
       return { success: true, user: adminUser };
-    } else {
-      const normalUser = { username: usernameOrPhone, name: usernameOrPhone, role: 'user' };
-      setUser(normalUser);
-      localStorage.setItem('app_user', JSON.stringify(normalUser));
-      return { success: true, user: normalUser };
     }
+
+    // 3. Normal user
+    const normalUser = { username: usernameOrPhone, name: usernameOrPhone, role: 'user' };
+    setUser(normalUser);
+    localStorage.setItem('app_user', JSON.stringify(normalUser));
+    return { success: true, user: normalUser };
   };
 
   const logout = () => {
@@ -254,7 +353,7 @@ export const AppProvider = ({ children }) => {
 
     // Filter inline keyboard buttons: Telegram Bot API ONLY accepts valid public http/https/tg URLs.
     // It rejects 'tel:', 'http://localhost', etc.
-    const cleanKeyboard = inlineKeyboard ? inlineKeyboard.map(row => 
+    const cleanKeyboard = inlineKeyboard ? inlineKeyboard.map(row =>
       row.filter(btn => btn?.url && (btn.url.startsWith('https://') || (btn.url.startsWith('http://') && !btn.url.includes('localhost') && !btn.url.includes('127.0.0.1'))))
     ).filter(row => row.length > 0) : null;
 
@@ -340,7 +439,7 @@ export const AppProvider = ({ children }) => {
   const placeOrder = async (customerDetails) => {
     const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
     const orderDate = new Date().toLocaleString('uz-UZ');
-    
+
     const newOrder = {
       id: orderId,
       date: new Date().toISOString(),
@@ -373,7 +472,7 @@ export const AppProvider = ({ children }) => {
     if (appliedPromo) {
       orderText += `\n🎟 <b>Promokod:</b> <code>${appliedPromo.code}</code> (-$${discountAmount.toFixed(2)})\n`;
     }
-    
+
     orderText += `🚚 <b>Yetkazish:</b> ${deliveryFee === 0 ? 'BEPUL' : '$' + deliveryFee}\n`;
     orderText += `💰 <b>JAMI TO'LOV:</b> <code>$${totalAmount.toFixed(2)}</code>`;
 
@@ -445,8 +544,11 @@ export const AppProvider = ({ children }) => {
         setSelectedCategory,
         priceRange,
         setPriceRange,
-        sortBy,
-        setSortBy,
+        admins,
+        addAdmin,
+        updateAdmin,
+        deleteAdmin,
+        toggleAdminStatus,
         storeLocation: STORE_LOCATION
       }}
     >

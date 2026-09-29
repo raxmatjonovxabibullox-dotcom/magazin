@@ -16,7 +16,8 @@ import {
   Zap,
   Maximize,
   Minimize,
-  ExternalLink
+  ExternalLink,
+  Crown
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import AuthModal from './AuthModal';
@@ -79,8 +80,12 @@ export default function Header() {
     { path: '/cart', label: t.cart },
   ];
 
-  if (user?.role === 'admin') {
-    navLinks.push({ path: '/admin', label: t.admin });
+  if (user?.role === 'admin' || user?.role === 'owner') {
+    navLinks.push({ path: '/admin', label: t.admin || 'Admin Panel' });
+  }
+
+  if (user?.role === 'owner') {
+    navLinks.push({ path: '/owner', label: 'Owner Panel' });
   }
 
   return (
@@ -142,21 +147,40 @@ export default function Header() {
 
           {/* Nav Links Desktop */}
           <nav className="hidden lg:flex items-center gap-6 font-medium text-sm">
-            {navLinks.map((link) => (
-              link.path === '/admin' ? (
-                <a
-                  key={link.path}
-                  href={link.path}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 font-extrabold hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition shadow-sm"
-                  title="Admin panelni alohida oynada ochish"
-                >
-                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                  <span>{link.label}</span>
-                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-                </a>
-              ) : (
+            {navLinks.map((link) => {
+              if (link.path === '/owner') {
+                return (
+                  <a
+                    key={link.path}
+                    href={link.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-black hover:bg-amber-500/25 transition shadow-sm"
+                    title="Loyiha Egasi (Owner) panelini alohida oynada ochish"
+                  >
+                    <Crown className="w-4 h-4 text-amber-500" />
+                    <span>{link.label}</span>
+                    <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                  </a>
+                );
+              }
+              if (link.path === '/admin') {
+                return (
+                  <a
+                    key={link.path}
+                    href={link.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 font-extrabold hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition shadow-sm"
+                    title="Admin panelni alohida oynada ochish"
+                  >
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                    <span>{link.label}</span>
+                    <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                  </a>
+                );
+              }
+              return (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -167,8 +191,8 @@ export default function Header() {
                 >
                   {link.label}
                 </Link>
-              )
-            ))}
+              );
+            })}
           </nav>
 
           {/* Actions & Utilities */}
@@ -261,15 +285,17 @@ export default function Header() {
               )}
             </Link>
 
-            {/* User Auth / Admin Button */}
+            {/* User Auth / Admin / Owner Button */}
             {user ? (
               <div className="flex items-center gap-1 bg-indigo-50 dark:bg-gray-800 border border-indigo-200 dark:border-gray-700 rounded-xl px-2.5 py-1">
-                {user.role === 'admin' ? (
+                {user.role === 'owner' ? (
+                  <Crown className="w-4 h-4 text-amber-500" />
+                ) : user.role === 'admin' ? (
                   <ShieldCheck className="w-4 h-4 text-emerald-500" />
                 ) : (
                   <User className="w-4 h-4 text-indigo-500" />
                 )}
-                <span className="text-xs font-bold truncate max-w-[80px] dark:text-white">
+                <span className="text-xs font-bold truncate max-w-[90px] dark:text-white">
                   {user.name}
                 </span>
                 <button
@@ -314,23 +340,44 @@ export default function Header() {
             </form>
 
             <div className="flex flex-col space-y-2">
-              {navLinks.map((link) => (
-                link.path === '/admin' ? (
-                  <a
-                    key={link.path}
-                    href={link.path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400"
-                  >
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                      <span>{link.label}</span>
-                    </div>
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                ) : (
+              {navLinks.map((link) => {
+                if (link.path === '/owner') {
+                  return (
+                    <a
+                      key={link.path}
+                      href={link.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold bg-amber-500/15 dark:bg-amber-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-400"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Crown className="w-4 h-4 text-amber-500" />
+                        <span>{link.label}</span>
+                      </div>
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  );
+                }
+                if (link.path === '/admin') {
+                  return (
+                    <a
+                      key={link.path}
+                      href={link.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                        <span>{link.label}</span>
+                      </div>
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  );
+                }
+                return (
                   <Link
                     key={link.path}
                     to={link.path}
@@ -342,8 +389,8 @@ export default function Header() {
                   >
                     {link.label}
                   </Link>
-                )
-              ))}
+                );
+              })}
 
               {!user && (
                 <button

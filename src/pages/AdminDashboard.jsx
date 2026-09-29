@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
+  Crown,
   ShieldCheck, 
   DollarSign, 
   ShoppingBag, 
@@ -312,6 +313,19 @@ export default function AdminDashboard() {
 
         {/* Sidebar Footer Controls */}
         <div className="pt-4 mt-6 border-t border-slate-200 dark:border-slate-800 space-y-1.5">
+          <a
+            href="/owner"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 transition"
+          >
+            <div className="flex items-center gap-3">
+              <Crown className="w-4 h-4 text-amber-500" />
+              <span>Owner Panel</span>
+            </div>
+            <span className="text-[10px] uppercase font-black bg-amber-500/20 px-1.5 py-0.5 rounded">Boss</span>
+          </a>
+
           <a
             href="/"
             target="_blank"
