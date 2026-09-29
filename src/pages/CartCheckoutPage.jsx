@@ -163,7 +163,7 @@ export default function CartCheckoutPage() {
                     alt={product.title}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop";
+                      e.target.src = "https://images.unsplash.com/photo-1525858907241-d230b66fb9fa?q=80&w=800&auto=format&fit=crop";
                     }}
                     className="w-20 h-20 object-cover rounded-2xl bg-gray-100 dark:bg-gray-900 shrink-0"
                   />

@@ -61,14 +61,15 @@ export const AppProvider = ({ children }) => {
   };
 
   // 4. Products CRUD state
-  const FALLBACK_PRODUCT_IMAGE = "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop";
+  const REAL_POWERBANK_IMAGE = "https://images.unsplash.com/photo-1525858907241-d230b66fb9fa?q=80&w=800&auto=format&fit=crop";
+  const FALLBACK_PRODUCT_IMAGE = REAL_POWERBANK_IMAGE;
 
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem('app_products');
     const loaded = saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
     return loaded.map(p => {
-      if (!p.image || p.image.includes('1583863788434') || p.image.includes('1609592424074')) {
-        return { ...p, image: FALLBACK_PRODUCT_IMAGE };
+      if (p.id === 'p8' || !p.image || p.image.includes('1544816155-12df9643f363') || p.image.includes('1583863788434') || p.image.includes('1609592424074')) {
+        return { ...p, image: REAL_POWERBANK_IMAGE };
       }
       return p;
     });
@@ -127,12 +128,12 @@ export const AppProvider = ({ children }) => {
     const saved = localStorage.getItem('app_cart');
     const loadedCart = saved ? JSON.parse(saved) : [];
     return loadedCart.map(item => {
-      if (!item.product?.image || item.product.image.includes('1583863788434') || item.product.image.includes('1609592424074')) {
+      if (item.product?.id === 'p8' || !item.product?.image || item.product.image.includes('1544816155-12df9643f363') || item.product.image.includes('1583863788434') || item.product.image.includes('1609592424074')) {
         return {
           ...item,
           product: {
             ...item.product,
-            image: FALLBACK_PRODUCT_IMAGE
+            image: REAL_POWERBANK_IMAGE
           }
         };
       }

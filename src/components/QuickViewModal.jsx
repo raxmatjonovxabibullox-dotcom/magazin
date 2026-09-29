@@ -39,7 +39,7 @@ export default function QuickViewModal({ product, onClose }) {
             alt={product.title}
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop";
+              e.target.src = "https://images.unsplash.com/photo-1525858907241-d230b66fb9fa?q=80&w=800&auto=format&fit=crop";
             }}
             className="max-h-72 md:max-h-96 w-auto object-contain rounded-2xl shadow-lg"
           />
